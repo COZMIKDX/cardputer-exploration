@@ -1,9 +1,9 @@
 /**
- * @file mic.ino
- * @author SeanKwok (shaoxiang@m5stack.com)
- * @brief M5Cardputer Microphone Record Test
+ * @file main.cpp
+ * @author COZMIKDX
+ * @brief M5Cardputer Tone generator app
  * @version 0.1
- * @date 2023-10-09
+ * @date 2024-2-02
  *
  *
  * @Hardwares: M5Cardputer
@@ -11,14 +11,32 @@
  * @Dependent Library:
  * M5GFX: https://github.com/m5stack/M5GFX
  * M5Unified: https://github.com/m5stack/M5Unified
+ * 
+ * Description: Plays a tone at a user adjustable frequency.
+ *  As I am still getting started, I'm borrowing a lot of ideas from the M5Unified and M5Cardputer examples.
  */
 
 #include <Arduino.h>
 #include <M5Cardputer.h>
 
 void volume_check();
+void frequency_up();
+void frequency_down();
+void master_volume_up();
+void master_volume_down();
 
 uint8_t master_volume = 128;
+struct menu_item {
+    const char* title;
+    void (*func)();
+};
+
+const menu_item menus [] {
+    { "frequency up", frequency_up },
+    { "frequency down", frequency_down },
+    { "volume up", master_volume_up },
+    { "volume down", master_volume_down },
+};
 
 void setup(void)
 {
@@ -38,6 +56,7 @@ void setup(void)
     /// off the speaker here.
     M5Cardputer.Speaker.begin();
     M5Cardputer.Display.drawString("Tone Generator", 100, 3);
+    M5Cardputer.Display.setFont(&fonts::FreeSans9pt7b);
     M5Cardputer.Display.drawString("Volume: ", 100, 3);
 }
 
@@ -62,28 +81,20 @@ void loop(void)
                 for (auto i : status.word)
                 {
                     if (i == ';') { 
-                        freq = freq + 10;
-                        // M5Cardputer.Speaker.stop();
-                        M5Cardputer.Speaker.tone(freq, 1000, 1);
+                        frequency_up();
                     }
 
                     if (i == '.') {
-                        freq = freq - 10;
-                        // M5Cardputer.Speaker.stop();
-                        M5Cardputer.Speaker.tone(freq, 1000, 1);
+                        frequency_down();
                     }
 
                     if (i == '_') {
-                        master_volume -= 5;
-                        volume_check();
-                        M5Cardputer.Speaker.setVolume(master_volume);
+                        master_volume_down();
                     }
 
                     if (i == '=')
                     {
-                        master_volume += 5;
-                        volume_check();
-                        M5Cardputer.Speaker.setVolume(master_volume);
+                        master_volume_up();
                     }
                 }
             }
@@ -100,11 +111,23 @@ void master_volume_up() {
     }
 }
 
-void m_volume_down(bool)
+void master_volume_down()
 {
     int volume = M5Cardputer.Speaker.getVolume() - 1;
     if (volume >= 0)
     {
         M5.Speaker.setVolume(volume);
     }
+}
+
+void frequency_up() {
+    freq = freq + 10;
+    // M5Cardputer.Speaker.stop();
+    M5Cardputer.Speaker.tone(freq, 1000, 1);
+}
+
+void frequency_down() {
+    freq = freq - 10;
+    // M5Cardputer.Speaker.stop();
+    M5Cardputer.Speaker.tone(freq, 1000, 1);
 }
