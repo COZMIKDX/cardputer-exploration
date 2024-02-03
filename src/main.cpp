@@ -41,7 +41,6 @@ const menu_item menus [] {
 void setup(void)
 {
     auto cfg = M5.config();
-
     M5Cardputer.begin(cfg);
 
     M5Cardputer.Display.startWrite();
@@ -57,7 +56,7 @@ void setup(void)
     M5Cardputer.Speaker.begin();
     M5Cardputer.Display.drawString("Tone Generator", 100, 3);
     M5Cardputer.Display.setFont(&fonts::FreeSans9pt7b);
-    M5Cardputer.Display.drawString("Volume: ", 100, 3);
+    M5Cardputer.Display.drawString("Volume: ", 0, 16);
 }
 
 float freq = 50;
