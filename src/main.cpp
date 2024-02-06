@@ -24,6 +24,7 @@ void frequency_up();
 void frequency_down();
 void master_volume_up();
 void master_volume_down();
+void drawStaticUI();
 
 uint8_t master_volume = 128;
 struct menu_item {
@@ -42,10 +43,11 @@ void setup(void)
 {
     auto cfg = M5.config();
     M5Cardputer.begin(cfg);
+    M5Cardputer.Display.startWrite(); // Gives us DMA so that drawing is faster. Can't use sdcard at the same time.
+    // startWrite is used with writeX functions. Not needed for drawX functions. Not sure if setX functions are affected.
 
-    M5Cardputer.Display.startWrite();
     M5Cardputer.Display.setRotation(1);
-    M5Cardputer.Display.setTextDatum(top_center);
+    M5Cardputer.Display.setTextDatum(top_left); // where the anchor point is.
     M5Cardputer.Display.setTextColor(WHITE);
     M5Cardputer.Display.setFont(&fonts::FreeSansBoldOblique12pt7b);
     M5Cardputer.Speaker.setVolume(master_volume);
@@ -54,9 +56,8 @@ void setup(void)
     // turn
     /// off the speaker here.
     M5Cardputer.Speaker.begin();
-    M5Cardputer.Display.drawString("Tone Generator", 100, 3);
-    M5Cardputer.Display.setFont(&fonts::FreeSans9pt7b);
-    M5Cardputer.Display.drawString("Volume: ", 0, 16);
+    drawStaticUI();
+    M5Cardputer.Display.endWrite();
 }
 
 float freq = 50;
@@ -119,14 +120,25 @@ void master_volume_down()
     }
 }
 
+// todo: See if these libraries give me a way to see if a button is being held.
 void frequency_up() {
     freq = freq + 10;
     // M5Cardputer.Speaker.stop();
-    M5Cardputer.Speaker.tone(freq, 1000, 1);
+    M5Cardputer.Speaker.tone(freq, UINT32_MAX, 1);
 }
 
 void frequency_down() {
     freq = freq - 10;
     // M5Cardputer.Speaker.stop();
-    M5Cardputer.Speaker.tone(freq, 1000, 1);
+    M5Cardputer.Speaker.tone(freq, UINT32_MAX, 1);
+}
+
+void drawStaticUI() {
+    M5Cardputer.Display.setTextSize(1.0);
+    M5Cardputer.Display.drawString("Tone Generator", 0, 3);
+
+    M5Cardputer.Display.setTextSize(0.5);
+    M5Cardputer.Display.setFont(&fonts::FreeSans9pt7b);
+    M5Cardputer.Display.drawString("Volume: ", 0, 32);
+    M5Cardputer.Display.drawString("Frequency: ", 0, 48);
 }
