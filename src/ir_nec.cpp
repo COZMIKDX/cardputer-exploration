@@ -21,6 +21,7 @@
 #define SEND_PWM_BY_TIMER
 #define IR_TX_PIN 44
 
+#include <Arduino.h>
 #include "M5Cardputer.h"
 #include <IRremote.hpp>  // include the library
 
