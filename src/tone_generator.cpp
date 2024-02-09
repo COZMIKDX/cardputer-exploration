@@ -90,19 +90,21 @@ void run_tone_generator(m5::M5_CARDPUTER M5Cardputer)
 void master_volume_up()
 {
     int volume = M5Cardputer.Speaker.getVolume() + 1;
-    if (volume < 256)
+    if (volume > 255)
     {
-        M5.Speaker.setVolume(volume);
+        volume = 255;
     }
+    M5.Speaker.setVolume(volume);
 }
 
 void master_volume_down()
 {
     int volume = M5Cardputer.Speaker.getVolume() - 1;
-    if (volume >= 0)
+    if (volume <= 0)
     {
-        M5.Speaker.setVolume(volume);
+        volume = 0;
     }
+    M5.Speaker.setVolume(volume);
 }
 
 // todo: See if these libraries give me a way to see if a button is being held.
