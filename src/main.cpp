@@ -18,6 +18,7 @@
 
 #include <Arduino.h>
 #include <M5Cardputer.h>
+#include <tone_generator.hpp>
 
 void setup(void)
 {
@@ -30,6 +31,8 @@ void setup(void)
     and some sort of run function that is to be placed in the loop function.
     I'm open to running functions that do more than set things up here in setup() but I don't want them infinitely looping here.
    */
+
+  tone_generator_setup(M5Cardputer);
 }
 
 void loop(void)
@@ -44,4 +47,6 @@ void loop(void)
     I suppose this could be a sort of app builder or more like feature compositor. 
     I don't want to get too far into using it like that without thinking it over and making a written plan first.
     */
+
+   run_tone_generator(M5Cardputer);
 }
