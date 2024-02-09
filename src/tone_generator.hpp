@@ -1,5 +1,5 @@
-#ifndef tone_generator.h 
-#define tone_generator.h
+#ifndef tone_generator.hpp
+#define tone_generator.hpp
 #include <M5Cardputer.h>
 
 void tone_generator_setup(m5::M5_CARDPUTER M5Cardputer);
