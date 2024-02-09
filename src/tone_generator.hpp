@@ -1,3 +1,5 @@
+#ifndef tone_generator.h 
+#define tone_generator.h
 #include <M5Cardputer.h>
 
 void tone_generator_setup(m5::M5_CARDPUTER M5Cardputer);
@@ -8,3 +10,5 @@ void frequency_down();
 void master_volume_up();
 void master_volume_down();
 void drawStaticUI();
+
+#endif
