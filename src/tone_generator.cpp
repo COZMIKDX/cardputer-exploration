@@ -9,6 +9,8 @@ void master_volume_up();
 void master_volume_down();
 void drawStaticUI();
 
+// todo: consider making a namespace.
+
 uint8_t master_volume = 128;
 struct menu_item
 {
@@ -24,6 +26,8 @@ const menu_item menus[]{
 };
 
 void tone_generator_setup(m5::M5_CARDPUTER M5Cardputer) {
+    // startWrite is used with writeX functions. Not needed for drawX functions. Not sure if setX functions are affected.
+    M5Cardputer.Display.startWrite(); // Gives us DMA so that drawing is faster. Can't use sdcard at the same time.
     M5Cardputer.Display.setRotation(1);
     M5Cardputer.Display.setTextDatum(top_left); // where the anchor point is.
     M5Cardputer.Display.setTextColor(WHITE);
@@ -102,6 +106,7 @@ void master_volume_down()
 }
 
 // todo: See if these libraries give me a way to see if a button is being held.
+float freq = 50;
 void frequency_up()
 {
     freq = freq + 10;
