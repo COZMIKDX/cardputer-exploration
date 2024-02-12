@@ -19,6 +19,7 @@
 #include <Arduino.h>
 #include <M5Cardputer.h>
 #include <tone_generator.hpp>
+#include <coordinate_finder.hpp>
 
 void setup(void)
 {
@@ -33,6 +34,7 @@ void setup(void)
    */
 
   tone_generator_setup(M5Cardputer);
+  coordinate_finder_setup(M5Cardputer);
 }
 
 void loop(void)
@@ -48,5 +50,6 @@ void loop(void)
     I don't want to get too far into using it like that without thinking it over and making a written plan first.
     */
 
-   run_tone_generator(M5Cardputer);
+//    run_tone_generator(M5Cardputer);
+   run_coordinate_finder(M5Cardputer);
 }
