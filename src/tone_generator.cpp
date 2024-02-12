@@ -133,3 +133,7 @@ void drawStaticUI()
     M5Cardputer.Display.drawString("Volume: ", 0, 32);
     M5Cardputer.Display.drawString("Frequency: ", 0, 48);
 }
+
+void drawValues() {
+
+}
